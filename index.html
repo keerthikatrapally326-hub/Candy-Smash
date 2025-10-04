@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Candy Smash - Match 3 Puzzle Game</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="screen">
+        <div class="loading-content">
+            <h1 class="game-title">Candy Smash</h1>
+            <div class="loading-spinner"></div>
+            <p>Loading delicious candies...</p>
+        </div>
+    </div>
+
+    <!-- Main Menu -->
+    <div id="main-menu" class="screen hidden">
+        <div class="menu-content">
+            <h1 class="game-title">Candy Smash</h1>
+            <div class="menu-buttons">
+                <button id="play-btn" class="menu-btn primary">Play</button>
+                <button id="levels-btn" class="menu-btn">Levels</button>
+                <button id="settings-btn" class="menu-btn">Settings</button>
+            </div>
+            <!-- Ad Banner Placeholder -->
+            <div id="banner-ad" class="ad-banner">
+                <p>Banner Ad Placeholder</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Selection -->
+    <div id="level-select" class="screen hidden">
+        <div class="level-select-content">
+            <h2>Select Level</h2>
+            <button id="back-to-menu" class="back-btn">← Back</button>
+            <div id="level-grid" class="level-grid">
+                <!-- Level buttons will be generated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+        <!-- Game UI Header -->
+        <div class="game-header">
+            <div class="game-info">
+                <div class="info-item">
+                    <span class="label">Level</span>
+                    <span id="current-level" class="value">1</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Score</span>
+                    <span id="current-score" class="value">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Moves</span>
+                    <span id="moves-left" class="value">30</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Lives</span>
+                    <div id="lives-indicator" class="lives-display">
+                        <span class="life-heart">❤️</span>
+                        <span class="life-heart">❤️</span>
+                        <span class="life-heart">❤️</span>
+                        <span class="life-heart">❤️</span>
+                        <span class="life-heart">❤️</span>
+                    </div>
+                    <span id="life-timer" class="life-timer">Full</span>
+                </div>
+            </div>
+            <div class="game-controls">
+                <button id="pause-btn" class="control-btn">⏸️</button>
+                <button id="sound-toggle" class="control-btn">🔊</button>
+                <button id="menu-btn" class="control-btn">🏠</button>
+            </div>
+        </div>
+
+        <!-- Boosters Panel -->
+        <div class="boosters-panel">
+            <button id="hammer-booster" class="booster-btn" data-booster="hammer">
+                <span class="booster-icon">🔨</span>
+                <span class="booster-count">3</span>
+            </button>
+            <button id="swap-booster" class="booster-btn" data-booster="swap">
+                <span class="booster-icon">🔄</span>
+                <span class="booster-count">2</span>
+            </button>
+            <button id="bomb-booster" class="booster-btn" data-booster="bomb">
+                <span class="booster-icon">💣</span>
+            </button>
+        </div>
+
+        <!-- Level Progress Section -->
+        <div class="level-progress">
+            <div class="progress-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Moves</span>
+                    <span id="moves-display" class="stat-value">30</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Score</span>
+                    <span id="score-display" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Target</span>
+                    <span id="target-display" class="stat-value">1000</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <div class="objectives">
+                    <div id="objective-text">Reach 1000 points!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Board -->
+        <div class="game-container">
+            <div id="game-board" class="game-board">
+                <!-- Candies will be generated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pause-menu" class="modal hidden">
+        <div class="modal-content">
+            <h2>Game Paused</h2>
+            <button id="resume-btn" class="modal-btn primary">Resume</button>
+            <button id="restart-btn" class="modal-btn">Restart Level</button>
+            <button id="quit-btn" class="modal-btn">Quit to Menu</button>
+        </div>
+    </div>
+
+    <!-- Level Complete Modal -->
+    <div id="level-complete" class="modal hidden">
+        <div class="modal-content celebration">
+            <h2>Level Complete!</h2>
+            <div class="stars">
+                <span class="star" id="star1">⭐</span>
+                <span class="star" id="star2">⭐</span>
+                <span class="star" id="star3">⭐</span>
+            </div>
+            <div class="final-score">
+                <p>Final Score: <span id="final-score">0</span></p>
+                <p>Best Score: <span id="best-score">0</span></p>
+            </div>
+            <div class="modal-buttons">
+                <button id="next-level-btn" class="modal-btn primary">Next Level</button>
+                <button id="replay-btn" class="modal-btn">Replay</button>
+                <!-- Rewarded Ad Placeholder -->
+                <button id="watch-ad-btn" class="modal-btn ad-btn">Watch Ad for Bonus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over" class="modal hidden">
+        <div class="modal-content">
+            <h2>Game Over</h2>
+            <p>You ran out of moves!</p>
+            <div class="modal-buttons">
+                <button id="retry-btn" class="modal-btn primary">Try Again</button>
+                <button id="buy-moves-btn" class="modal-btn purchase-btn">Buy 5 Moves - $0.99</button>
+                <button id="watch-ad-moves" class="modal-btn ad-btn">Watch Ad for 3 Moves</button>
+                <button id="quit-game-btn" class="modal-btn">Quit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Settings</h2>
+            <div class="settings-options">
+                <div class="setting-item">
+                    <label>Music Volume</label>
+                    <input type="range" id="music-volume" min="0" max="100" value="70">
+                </div>
+                <div class="setting-item">
+                    <label>Sound Effects</label>
+                    <input type="range" id="sfx-volume" min="0" max="100" value="80">
+                </div>
+                <div class="setting-item">
+                    <label>Notifications</label>
+                    <input type="checkbox" id="notifications" checked>
+                </div>
+            </div>
+            <button id="close-settings" class="modal-btn primary">Close</button>
+        </div>
+    </div>
+
+    <!-- Particle System -->
+    <div id="particle-container"></div>
+
+    <!-- Score Popup -->
+    <div id="score-popup" class="score-popup hidden">+100</div>
+
+    <!-- JavaScript Modules -->
+    <script src="js/utils.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/ads.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/levels.js"></script>
+    <script src="js/blockers.js"></script>
+    <script src="js/lives.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/grid.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
